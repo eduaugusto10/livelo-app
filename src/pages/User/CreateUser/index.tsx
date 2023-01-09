@@ -1,10 +1,12 @@
-import React, { FormEvent, useRef } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { IMaskInput } from "react-imask";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import api from "../../../services/api";
 import { toastError, toastSuccess } from "../../../components/Toast"
+import Header from "../../../components/Header";
+import { SelectStateKeys } from "../../../components/SelectStateKeys";
 
 function CreateUser() {
 
@@ -15,34 +17,39 @@ function CreateUser() {
     const genderRef = useRef<HTMLInputElement>(null)
     const birthRef = useRef<HTMLInputElement>(null)
     const emailRef = useRef<HTMLInputElement>(null)
-    const cityRef = useRef<HTMLInputElement>(null)
+    const [cityId, setCityId] = useState<Number>();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-
         try {
             api.post('/user', {
                 name: nameRef.current?.value,
                 cpf: cpfRef.current?.value,
-                gender: genderRef.current?.value,
+                genderId: genderRef.current?.value,
                 birth: birthRef.current?.value,
                 email: emailRef.current?.value,
-                city: cityRef.current?.value,
+                cityId: cityId,
             }).then(() => {
                 toastSuccess("Usuário criado com sucesso")
-            }).then(() => setTimeout(() => history("/adm"), 2000))
+            }).then(() => setTimeout(() => history("/"), 2000))
                 .catch(() => toastError("Erro ao criar usuário"))
         } catch (error) {
             toastError("Erro ao criar usuário")
         }
     }
+
+    const childToParent = (e: ChangeEvent<HTMLSelectElement>) => {
+        setCityId(parseInt(e.target.value))
+    }
+
     return (
-        <div>
+        <div className="container">
             <ToastContainer />
+            <Header />
             <h1>Registrar usuário</h1>
             <form onSubmit={handleSubmit}>
                 <h3>Nome completo</h3>
-                <input type={"text"} ref={nameRef} />
+                <input type={"text"} ref={nameRef} required />
                 <h3>CPF</h3>
                 <IMaskInput
                     ref={ref}
@@ -50,13 +57,15 @@ function CreateUser() {
                 <h3>Sexo</h3>
                 <input />
                 <h3>Data de nascimento</h3>
-                <input type={"date"} ref={birthRef} />
+                <input type={"date"} ref={birthRef} required />
                 <h3>E-mail</h3>
-                <input type={"email"} ref={emailRef} />
+                <input type={"email"} ref={emailRef} required />
                 <h3>Cidade</h3>
-                <input type={"text"} ref={cityRef} />
+                <div className="search-btn">
+                    <SelectStateKeys childToParent={childToParent} />
+                </div>
                 <div>
-                    <input className="button" type={"submit"} value="Voltar" />
+                    <input className="button" type={"button"} value="Voltar" onClick={() => history('/')} />
                     <input className="button" type={"submit"} value="Registrar" />
                 </div>
             </form>
