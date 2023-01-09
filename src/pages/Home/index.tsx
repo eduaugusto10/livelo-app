@@ -10,10 +10,16 @@ function Home() {
         <div className="container">
             <Header />
             <h1>O que deseja fazer?</h1>
-            <UserCard />
-            <button onClick={() => history('/user-register')}>Registrar</button>
-            <CityCard />
-            <button onClick={() => history('/city-register')}>Registrar</button>
+            <div className="card-container">
+                <div className="card">
+                    <UserCard />
+                    <button className="btn-small" onClick={() => history('/user-register')}>Registrar</button>
+                </div>
+                <div className="card">
+                    <CityCard />
+                    <button className="btn-small" onClick={() => history('/city-register')}>Registrar</button>
+                </div>
+            </div>
         </div>
     )
 }

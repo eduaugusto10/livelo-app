@@ -34,7 +34,10 @@ select {
   width: 20em;
   height: 2em;
 }
-
+span {
+  margin: 0.2em;
+  font-weight: bolder;
+}
 select {
   width: 5em;
   height: 2.3em;
@@ -51,7 +54,9 @@ button,
   border: none;
   font-weight: bolder;
 }
-
+.btn-small {
+  margin: 0.5em;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -66,12 +71,31 @@ button,
 .user-description {
   display: flex;
   flex-direction: column;
+  border: 1px solid #585c63;
+  margin: 1em;
+  background-color: #e7e7e7;
 }
 .select-city {
   width: 15.5em;
+}
+.select-gender {
+  width: 20.5em;
 }
 .search {
   width: 5em;
   height: 2.3em;
   border-radius: 0px 7px 7px 0px;
+}
+.micro-btn {
+  height: 2em;
+  width: 5em;
+}
+.card-container {
+  display: flex;
+  flex-direction: row;
+}
+.card {
+  margin: 2em;
+  border: 1px solid #e50091;
+  padding: 2em;
 }

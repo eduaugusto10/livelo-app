@@ -13,7 +13,8 @@ interface IUser {
     cpf: string,
     birth: string,
     city: string,
-    gender: string
+    gender: string,
+    state: string
 }
 
 function UserCard() {
@@ -31,9 +32,9 @@ function UserCard() {
 
             }).then((result) => {
                 setUser(result.data.data)
-                toastSuccess("Usuário criado com sucesso")
-            }).then(() => setTimeout(() => history("/adm"), 2000))
-                .catch(() => toastError("Nenhum usuário encontrado"))
+                if (result.data.data.length === 0)
+                    toastError("Nenhum usuário encontrado")
+            })
         } catch (error) {
             toastError("Erro geral no sistema")
         }
@@ -41,14 +42,11 @@ function UserCard() {
 
     const handleDelete = (e: number) => {
         try {
-            api.delete(`/user?id=${e}`, {
-
-            }).then((result) => {
-                setUser(result.data.data)
-                console.log(result.data.data)
-                toastSuccess("Usuário criado com sucesso")
-            }).then(() => setTimeout(() => history("/adm"), 2000))
-                .catch(() => toastError("Nenhum usuário encontrado"))
+            api.delete(`/user?id=${e}`)
+                .then((result) => {
+                    setUser(result.data.data)
+                    toastSuccess("Usuário deletado com sucesso")
+                })
         } catch (error) {
             toastError("Erro geral no sistema")
         }
@@ -58,8 +56,10 @@ function UserCard() {
         const value = e.target.value
         setSearchOption(Number(value))
     }
+
     return (
         <div className="container-card">
+            <ToastContainer />
             <h1>Usuário</h1>
             <form onSubmit={handleSubmit}>
                 <h3>Localizar</h3>
@@ -83,15 +83,16 @@ function UserCard() {
             </form>
             {user.length > 0 &&
                 <div className="user-description">
-                    <span>{user[0].name}</span>
-                    <span>{user[0].email}</span>
-                    <span>{user[0].cpf}</span>
-                    <span>{user[0].birth}</span>
-                    <span>{user[0].city}</span>
-                    <span>{user[0].gender}</span>
                     <div>
-                        <button onClick={() => history('/user-change')}>Alterar</button>
-                        <button onClick={() => handleDelete(user[0].id)}>Deletar</button>
+                        <span>Nome: {user[0].name}</span><button className="button micro-btn">alterar</button>
+                    </div>
+                    <span>E-mail: {user[0].email}</span>
+                    <span>CPF: {user[0].cpf}</span>
+                    <span>Dt.Nascimento: {user[0].birth}</span>
+                    <span>Cidade: {user[0].city} - {user[0].state}</span>
+                    <span>Sexo: {user[0].gender}</span>
+                    <div>
+                        <button className="btn-small" onClick={() => handleDelete(user[0].id)}>Deletar</button>
                     </div>
                 </div>
             }

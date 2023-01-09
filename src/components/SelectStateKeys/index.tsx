@@ -19,7 +19,7 @@ export function SelectStateKeys({ childToParent }: any) {
     }, [])
 
     const cityKey = (e: ChangeEvent<HTMLSelectElement>) => {
-        console.log(e.target.value)
+
         api.get(`/city?type=2&stateid=${e.target.value}`)
             .then(result => {
                 setCities(result.data.data)
@@ -29,11 +29,11 @@ export function SelectStateKeys({ childToParent }: any) {
     return (
         <div>
             <select onChange={cityKey}>
-                <option disabled>Escolha o estado</option>
+                <option hidden>Escolha o estado</option>
                 {states.map(element => <option key={element.id} value={element.id}>{element.state}</option>)}
             </select>
             <select className="select-city" onChange={childToParent}>
-                <option disabled>Escolha a cidade</option>
+                <option hidden>Escolha a cidade</option>
                 {cities.map(element => <option key={element.id} value={element.id}>{element.city}</option>)}
             </select>
         </div>)

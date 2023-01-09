@@ -7,6 +7,7 @@ import api from "../../../services/api";
 import { toastError, toastSuccess } from "../../../components/Toast"
 import Header from "../../../components/Header";
 import { SelectStateKeys } from "../../../components/SelectStateKeys";
+import { SelectGenderKeys } from "../../../components/SelectGenderKeys";
 
 function CreateUser() {
 
@@ -14,10 +15,10 @@ function CreateUser() {
     const ref = useRef()
     const nameRef = useRef<HTMLInputElement>(null)
     const cpfRef = useRef<HTMLInputElement>(null)
-    const genderRef = useRef<HTMLInputElement>(null)
     const birthRef = useRef<HTMLInputElement>(null)
     const emailRef = useRef<HTMLInputElement>(null)
     const [cityId, setCityId] = useState<Number>();
+    const [genderId, setGenderId] = useState<Number>();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -25,7 +26,7 @@ function CreateUser() {
             api.post('/user', {
                 name: nameRef.current?.value,
                 cpf: cpfRef.current?.value,
-                genderId: genderRef.current?.value,
+                genderId: genderId,
                 birth: birthRef.current?.value,
                 email: emailRef.current?.value,
                 cityId: cityId,
@@ -41,6 +42,9 @@ function CreateUser() {
     const childToParent = (e: ChangeEvent<HTMLSelectElement>) => {
         setCityId(parseInt(e.target.value))
     }
+    const genderProps = (e: ChangeEvent<HTMLSelectElement>) => {
+        setGenderId(parseInt(e.target.value))
+    }
 
     return (
         <div className="container">
@@ -55,7 +59,7 @@ function CreateUser() {
                     ref={ref}
                     mask={"000.000.000-00"} inputRef={cpfRef} />
                 <h3>Sexo</h3>
-                <input />
+                <SelectGenderKeys genderProps={genderProps} />
                 <h3>Data de nascimento</h3>
                 <input type={"date"} ref={birthRef} required />
                 <h3>E-mail</h3>
@@ -65,8 +69,8 @@ function CreateUser() {
                     <SelectStateKeys childToParent={childToParent} />
                 </div>
                 <div>
-                    <input className="button" type={"button"} value="Voltar" onClick={() => history('/')} />
-                    <input className="button" type={"submit"} value="Registrar" />
+                    <input className="button btn-small" type={"button"} value="Voltar" onClick={() => history('/')} />
+                    <input className="button btn-small" type={"submit"} value="Registrar" />
                 </div>
             </form>
         </div>

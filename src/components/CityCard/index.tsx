@@ -26,13 +26,12 @@ function CityCard() {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(cityRef.current?.value)
+
         try {
             api.get(`/city?type=${1}&name=${cityRef.current?.value}&stateid=${states}`, {
 
             }).then((result) => {
                 setStates(result.data.data)
-                console.log(result.data)
                 toastSuccess("Usuário criado com sucesso")
             }).then(() => setTimeout(() => history("/adm"), 2000))
                 .catch(() => toastError("Nenhum usuário encontrado"))
