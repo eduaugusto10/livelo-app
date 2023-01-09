@@ -30,8 +30,9 @@ function CreateUser() {
                 birth: birthRef.current?.value,
                 email: emailRef.current?.value,
                 cityId: cityId,
-            }).then(() => {
-                toastSuccess("Usuário criado com sucesso")
+            }).then((result) => {
+                if (result.data.statusCode === 200) toastSuccess(result.data.data.message)
+                else toastError(result.data.message)
             }).then(() => setTimeout(() => history("/"), 2000))
                 .catch(() => toastError("Erro ao criar usuário"))
         } catch (error) {

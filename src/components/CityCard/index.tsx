@@ -6,44 +6,42 @@ import api from "../../services/api";
 import { toastError, toastSuccess } from "../../components/Toast"
 import { useNavigate } from "react-router-dom";
 
-interface IUser {
-    name: string,
-    email: string,
-    cpf: string,
-    birth: string,
-    city: string,
-    gender: string
+interface ICities {
+    id: number,
+    state: String,
+    city: String,
+    stateId: String
 }
 
 function CityCard() {
-    const history = useNavigate()
-    const ref = useRef()
     const cityRef = useRef<HTMLInputElement>(null)
-    const stateRef = useRef<HTMLInputElement>(null)
-    const [searchOption, setSearchOption] = useState(2)
-    const [states, setStates] = useState("")
-
+    const [cities, setCities] = useState<ICities[]>([])
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         try {
-            api.get(`/city?type=${1}&name=${cityRef.current?.value}&stateid=${states}`, {
-
-            }).then((result) => {
-                setStates(result.data.data)
-                toastSuccess("Usuário criado com sucesso")
-            }).then(() => setTimeout(() => history("/adm"), 2000))
-                .catch(() => toastError("Nenhum usuário encontrado"))
+            api.get(`/city?type=${1}&name=${cityRef.current?.value}&stateid=`)
+                .then((result) => {
+                    setCities(result.data.data)
+                }).catch(() => toastError("Nenhum usuário encontrado"))
+        } catch (error) {
+            toastError("Erro geral no sistema")
+        }
+    }
+    const handleDelete = (e: Number) => {
+        try {
+            api.delete(`/city?id=${e}`)
+                .then((result) => {
+                    if (result.data.statusCode === 200) toastSuccess(result.data.message)
+                    else toastError(result.data.message)
+                    setCities([])
+                }).catch(() => toastError("Erro ao deletar cidade"))
         } catch (error) {
             toastError("Erro geral no sistema")
         }
     }
 
-    const selectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const value = e.target.value
-        setSearchOption(Number(value))
-    }
     return (
         <div className="container-card">
             <h1>Cidade</h1>
@@ -54,6 +52,21 @@ function CityCard() {
                     <input className="button search" type={"submit"} value="Procurar" />
                 </div>
             </form>
+            {cities.length > 0 &&
+                <div className="user-description">
+                    {cities && cities.map((city, index) => (
+                        <div key={index}>
+                            <div>
+                                <span>{city.city} - {city.state}</span>
+                                <div>
+                                    <button className="button micro-btn">alterar</button>
+                                    <button className="button micro-btn" onClick={() => handleDelete(city.id)}>deletar</button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            }
         </div>
     )
 }

@@ -74,6 +74,9 @@ button,
   border: 1px solid #585c63;
   margin: 1em;
   background-color: #e7e7e7;
+  overflow: auto;
+  max-height: 20em;
+  padding: 0.5em;
 }
 .select-city {
   width: 15.5em;
