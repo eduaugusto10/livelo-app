@@ -40,6 +40,7 @@ select {
   width: 20em;
   height: 2em;
 }
+
 span {
   margin: 0.2em;
   font-weight: bolder;
@@ -116,4 +117,29 @@ button,
   flex-direction: column;
   border-bottom: 2px solid var(--white);
   padding: 1em 0em 1em 0em;
+}
+
+@media screen and (max-width: 900px) {
+  .card-container {
+    flex-direction: column;
+    width: 25em;
+  }
+  button,
+  .button {
+    width: 6em;
+  }
+  .input-home,
+  .search-btn,
+  .select-small,
+  .select-gender {
+    width: 10em;
+  }
+  .input-cpf-home {
+    width: 9em;
+    border: none;
+  }
+  select {
+    width: 5em;
+    height: 2.3em;
+  }
 }

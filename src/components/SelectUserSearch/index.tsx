@@ -3,17 +3,6 @@ import api from "../../services/api"
 import { InputCPF } from "../InputCPF"
 import { toastError } from "../Toast"
 
-interface IUser {
-    id: number
-    name: string,
-    email: string,
-    cpf: string,
-    birth: string,
-    city: string,
-    gender: string,
-    state: string
-}
-
 export function SelectSearchUser({ handleSetUser }: any) {
     const nameRef = useRef<HTMLInputElement>(null)
     const [searchOption, setSearchOption] = useState<Number>(1)
@@ -51,10 +40,10 @@ export function SelectSearchUser({ handleSetUser }: any) {
                 <div className="search-btn">
                     {searchOption === 1 &&
                         <div>
-                            <input type={"text"} ref={nameRef} required />
+                            <input className="input-home" type={"text"} ref={nameRef} required />
                         </div>}
                     {searchOption === 2 &&
-                        <div>
+                        <div className='input-cpf-home'>
                             <InputCPF handleCPF={handleCPF} />
                         </div>}
                     <select onChange={selectChange}>

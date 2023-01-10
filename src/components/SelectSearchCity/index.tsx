@@ -52,7 +52,7 @@ export function SelectSearchCity({ handleSetCity }: any) {
                 <div className="search-btn">
                     {searchOption === 1 &&
                         <div>
-                            <input type={"text"} ref={cityRef} required />
+                            <input className="input-home" type={"text"} ref={cityRef} required />
                         </div>}
                     {searchOption === 2 &&
                         <div>

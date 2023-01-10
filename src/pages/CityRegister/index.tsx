@@ -56,7 +56,7 @@ function CreateCity() {
                 <input type={"text"} ref={cityRef} required />
                 <h3>Escolha o Estado</h3>
                 <div className="search-btn">
-                    <select onChange={cityKey}>
+                    <select className='responsive-select' onChange={cityKey}>
                         <option hidden>Escolha o estado</option>
                         {states.map(element => <option key={element.id} value={element.id}>{element.state}</option>)}
                     </select>
