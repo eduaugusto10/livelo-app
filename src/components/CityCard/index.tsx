@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import api from "../../services/api";
 import { toastError, toastSuccess } from "../../components/Toast"
 import { Modal } from "../Modal";
@@ -9,12 +9,6 @@ interface ICities {
     state: String,
     city: String,
     stateId: String
-}
-interface IStates {
-    id: number,
-    state: string,
-    city: string,
-    stateId: number
 }
 
 function CityCard() {
