@@ -1,3 +1,9 @@
+:root {
+  --pink: #e50091;
+  --white: #ffffff;
+  --gray: #585c63;
+  --lightgray: #e7e7e7;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -19,7 +25,7 @@ h4,
 h5 {
   padding: 0;
   margin: 0;
-  color: #585c63;
+  color: var(--gray);
 }
 
 form {
@@ -29,7 +35,7 @@ form {
 
 input,
 select {
-  border: 1px solid #e7e7e7;
+  border: 1px solid var(--lightgray);
   border-radius: 3px;
   width: 20em;
   height: 2em;
@@ -48,7 +54,7 @@ button,
   width: 10em;
   height: 3em;
   cursor: pointer;
-  background-color: #e50091;
+  background-color: var(--pink);
   color: #fff;
   border-radius: 20px;
   border: none;
@@ -71,9 +77,9 @@ button,
 .user-description {
   display: flex;
   flex-direction: column;
-  border: 1px solid #585c63;
+  border: 1px solid var(--gray);
   margin: 1em;
-  background-color: #e7e7e7;
+  background-color: var(--lightgray);
   overflow: auto;
   max-height: 20em;
   padding: 0.5em;
@@ -99,6 +105,15 @@ button,
 }
 .card {
   margin: 2em;
-  border: 1px solid #e50091;
+  border: 1px solid var(--pink);
   padding: 2em;
+}
+.select-small {
+  width: 20.5em;
+}
+.card-list {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid var(--white);
+  padding: 1em 0em 1em 0em;
 }

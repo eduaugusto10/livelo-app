@@ -6,7 +6,7 @@ interface IStates {
     gender: string
 }
 
-export function SelectGenderKeys({ genderProps }: any) {
+export function SelectGender({ genderProps }: any) {
     const [genders, setGenders] = useState<IStates[]>([])
 
     useEffect(() => {

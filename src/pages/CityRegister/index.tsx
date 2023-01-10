@@ -1,9 +1,9 @@
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import api from "../../../services/api";
-import Header from "../../../components/Header";
-import { toastError, toastSuccess } from "../../../components/Toast"
+import api from "../../services/api";
+import Header from "../../components/Header";
+import { toastError, toastSuccess } from "../../components/Toast"
 
 interface IStates {
     id: number,

@@ -1,10 +1,8 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
-import { IMaskInput } from "react-imask";
-import { ToastContainer } from "react-toastify";
-
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import api from "../../services/api";
 import { toastError, toastSuccess } from "../../components/Toast"
-import { useNavigate } from "react-router-dom";
+import { Modal } from "../Modal";
+import { SelectSearchCity } from "../SelectSearchCity";
 
 interface ICities {
     id: number,
@@ -12,54 +10,53 @@ interface ICities {
     city: String,
     stateId: String
 }
+interface IStates {
+    id: number,
+    state: string,
+    city: string,
+    stateId: number
+}
 
 function CityCard() {
-    const cityRef = useRef<HTMLInputElement>(null)
     const [cities, setCities] = useState<ICities[]>([])
+    const [show, setShow] = useState<Boolean>(false)
+    const [cityData, setCityData] = useState<ICities>()
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        try {
-            api.get(`/city?type=${1}&name=${cityRef.current?.value}&stateid=`)
-                .then((result) => {
-                    setCities(result.data.data)
-                }).catch(() => toastError("Nenhum usuário encontrado"))
-        } catch (error) {
-            toastError("Erro geral no sistema")
-        }
-    }
     const handleDelete = (e: Number) => {
         try {
             api.delete(`/city?id=${e}`)
                 .then((result) => {
-                    if (result.data.statusCode === 200) toastSuccess(result.data.message)
+                    if (result.data.statusCode === 200) {
+                        toastSuccess(result.data.message)
+                        setCities([])
+                    }
                     else toastError(result.data.message)
-                    setCities([])
                 }).catch(() => toastError("Erro ao deletar cidade"))
         } catch (error) {
             toastError("Erro geral no sistema")
         }
     }
 
+    const alterCityName = (cities: ICities) => {
+        setCityData(cities)
+        setShow(!show)
+    }
+    const handleSetCity = (e: ICities[]) => {
+        setCities(e)
+    }
     return (
         <div className="container-card">
             <h1>Cidade</h1>
-            <form onSubmit={handleSubmit}>
-                <h3>Localizar</h3>
-                <div className="search-btn">
-                    <input type={"text"} ref={cityRef} />
-                    <input className="button search" type={"submit"} value="Procurar" />
-                </div>
-            </form>
+            <SelectSearchCity handleSetCity={handleSetCity} />
             {cities.length > 0 &&
                 <div className="user-description">
+                    <Modal type={1} setShow={setShow} show={show} data={cityData} title={"Alterar nome da cidade"} />
                     {cities && cities.map((city, index) => (
-                        <div key={index}>
+                        <div className="card-list" key={index}>
                             <div>
                                 <span>{city.city} - {city.state}</span>
                                 <div>
-                                    <button className="button micro-btn">alterar</button>
+                                    <button className="button micro-btn" onClick={() => alterCityName(city)}>alterar</button>
                                     <button className="button micro-btn" onClick={() => handleDelete(city.id)}>deletar</button>
                                 </div>
                             </div>

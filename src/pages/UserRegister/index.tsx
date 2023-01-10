@@ -1,22 +1,21 @@
-import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import { IMaskInput } from "react-imask";
+import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import api from "../../../services/api";
-import { toastError, toastSuccess } from "../../../components/Toast"
-import Header from "../../../components/Header";
-import { SelectStateKeys } from "../../../components/SelectStateKeys";
-import { SelectGenderKeys } from "../../../components/SelectGenderKeys";
+import api from "../../services/api";
+import { toastError, toastSuccess } from "../../components/Toast"
+import Header from "../../components/Header";
+import { SelectState } from "../../components/SelectState";
+import { SelectGender } from "../../components/SelectGender";
+import { InputCPF } from "../../components/InputCPF";
 
 function CreateUser() {
 
     const history = useNavigate()
-    const ref = useRef()
     const nameRef = useRef<HTMLInputElement>(null)
-    const cpfRef = useRef<HTMLInputElement>(null)
     const birthRef = useRef<HTMLInputElement>(null)
     const emailRef = useRef<HTMLInputElement>(null)
+    const [cpfValue, setCPFValue] = useState<String>()
     const [cityId, setCityId] = useState<Number>();
     const [genderId, setGenderId] = useState<Number>();
 
@@ -25,13 +24,13 @@ function CreateUser() {
         try {
             api.post('/user', {
                 name: nameRef.current?.value,
-                cpf: cpfRef.current?.value,
+                cpf: cpfValue,
                 genderId: genderId,
                 birth: birthRef.current?.value,
                 email: emailRef.current?.value,
                 cityId: cityId,
             }).then((result) => {
-                if (result.data.statusCode === 200) toastSuccess(result.data.data.message)
+                if (result.data.statusCode === 201) toastSuccess(result.data.message)
                 else toastError(result.data.message)
             }).then(() => setTimeout(() => history("/"), 2000))
                 .catch(() => toastError("Erro ao criar usuário"))
@@ -46,7 +45,9 @@ function CreateUser() {
     const genderProps = (e: ChangeEvent<HTMLSelectElement>) => {
         setGenderId(parseInt(e.target.value))
     }
-
+    const handleCPF = (e: string) => {
+        setCPFValue(e)
+    }
     return (
         <div className="container">
             <ToastContainer />
@@ -56,18 +57,16 @@ function CreateUser() {
                 <h3>Nome completo</h3>
                 <input type={"text"} ref={nameRef} required />
                 <h3>CPF</h3>
-                <IMaskInput
-                    ref={ref}
-                    mask={"000.000.000-00"} inputRef={cpfRef} />
+                <InputCPF handleCPF={handleCPF} />
                 <h3>Sexo</h3>
-                <SelectGenderKeys genderProps={genderProps} />
+                <SelectGender genderProps={genderProps} />
                 <h3>Data de nascimento</h3>
                 <input type={"date"} ref={birthRef} required />
                 <h3>E-mail</h3>
                 <input type={"email"} ref={emailRef} required />
                 <h3>Cidade</h3>
                 <div className="search-btn">
-                    <SelectStateKeys childToParent={childToParent} />
+                    <SelectState childToParent={childToParent} />
                 </div>
                 <div>
                     <input className="button btn-small" type={"button"} value="Voltar" onClick={() => history('/')} />

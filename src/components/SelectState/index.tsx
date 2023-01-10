@@ -8,7 +8,7 @@ interface IStates {
     stateId: number
 }
 
-export function SelectStateKeys({ childToParent }: any) {
+export function SelectState({ childToParent }: any) {
     const [states, setStates] = useState<IStates[]>([])
     const [cities, setCities] = useState<IStates[]>([])
     useEffect(() => {
